@@ -1,95 +1,86 @@
-const router = require('express').Router();
-const { Category, Product } = require('../../models');
-// 
-// 
-// 
-//////////////////////////////
-//                          //
-//    GET ALL CATEGORIES    //
-//                          //
-//////////////////////////////
-// GET -> -> -> http://localhost:3001/api/categories <- <- <- GET //
-router.get('/', (req, res) => {
+const router = require("express").Router();
+const { Category, Product } = require("../../models");
+
+// The `/api/categories` endpoint
+
+//get all categories
+router.get("/", async (req, res) => {
+  // find all categories
+  // be sure to include its associated Products
   try {
     const categoryData = await Category.findAll({
       include: [{ model: Product }],
     });
     res.status(200).json(categoryData);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json(err);
   }
 });
-// 
-// 
-// 
-//////////////////////////////
-//                          //
-//    GET CATEGORY BY ID    //
-//                          //
-//////////////////////////////
-// GET -> -> -> http://localhost:3001/api/categories/{ID} <- <- <- GET //
-router.get('/:id', (req, res) => {
+
+//get one category
+router.get("/:id", async (req, res) => {
+  // find one category by its `id` value
+  // be sure to include its associated Products
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-      include: [{ model: Product }]
+      include: [{ model: Product }],
     });
     if (!categoryData) {
-      res.status(404).json({ message: "NO category found with that id!"});
+      res.status(404).json({ message: "match not found" });
       return;
     }
-    res.status(200).json(driverData);
-  }catch (err) {
-    res.status(500).json(err);
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
-// 
-// 
-// 
-/////////////////////////////////
-//                             //
-//    CREATE A NEW CATEGORY    //
-//                             //
-/////////////////////////////////
-// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
-router.post('/', (req, res) => {
-  // create a new category
+
+// create a new category
+router.post("/", async (req, res) => {
   try {
-    const categoryData = await Category.create(req.params. {
-      include: [{ model: Product }]
-    })
-    
+    const newCategory = await Category.create({
+      category_name: req.body.category_name,
+    });
+    res.status(200).json(newCategory);
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
-// 
-// 
-// 
-////////////////////////////////////
-//                                //
-//    UPDATE A CATEGORY BY ID     //
-//                                //
-////////////////////////////////////
-// PUT -> -> -> http://localhost:3001/api/categories <- <- <- PUT //
-router.update('/:id', (req, res) => {
-  Category.update(
-    {
-    category_name: req.body.category_name
-  })
-});
-// 
-// 
-// 
- /////////////////////////////////////
- //                                 //
- //    DELETE A CATEGORY BY ID      //
- //                                 //
- /////////////////////////////////////
-// DESTROY -> -> -> http://localhost:3001/api/categories/{ID} <- <- <- DESTROY //
-router.delete('/:id', (req, res) => {
-  Category.destroy({
-    where: {
-      id: req.params.id
+
+// update a category by its `id` value
+router.put("/:id", async (req, res) => {
+  try {
+    const updateCategory = await Category.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!updateCategory[0]) {
+      res.status(404).json({ message: "No match" });
+      return;
     }
-  })
+    res.status(200).json(updateCategory);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// delete a category by its `id` value
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleteCategory = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deleteCategory) {
+      res.status(404).json({ message: "No match" });
+      return;
+    }
+    res.status(200).json(deleteCategory);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 module.exports = router;
