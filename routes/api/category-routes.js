@@ -1,9 +1,13 @@
 const router = require("express").Router();
 const { Category, Product } = require("../../models");
-
-// The `/api/categories` endpoint
-
-//get all categories
+// 
+// 
+// 
+//////////////////////////////
+//                          //
+//    GET ALL CATEGORIES    //
+//                          //
+//////////////////////////////
 router.get("/", async (req, res) => {
   // find all categories
   // be sure to include its associated Products
@@ -16,8 +20,14 @@ router.get("/", async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-//get one category
+// 
+// 
+// 
+////////////////////////////
+//                        //
+//    GET ONE CATEGORY    //
+//                        //
+////////////////////////////
 router.get("/:id", async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
@@ -34,8 +44,14 @@ router.get("/:id", async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-// create a new category
+// 
+// 
+// 
+/////////////////////////////////
+//                             //
+//    CREATE A NEW CATEGORY    //
+//                             //
+/////////////////////////////////
 router.post("/", async (req, res) => {
   try {
     const newCategory = await Category.create({
@@ -46,8 +62,15 @@ router.post("/", async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-// update a category by its `id` value
+// 
+// 
+// 
+/////////////////////////////////////////////
+//                                         //
+//    UPDATE A CATEGORY BY ITS ID VALUE    //
+//                                         //
+/////////////////////////////////////////////
+// 
 router.put("/:id", async (req, res) => {
   try {
     const updateCategory = await Category.update(req.body, {
@@ -64,8 +87,15 @@ router.put("/:id", async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-// delete a category by its `id` value
+// 
+// 
+// 
+/////////////////////////////////////////////
+//                                         //
+//    DELETE A CATEGORY BY ITS ID VALUE    //
+//                                         //
+/////////////////////////////////////////////
+// 
 router.delete("/:id", async (req, res) => {
   try {
     const deleteCategory = await Category.destroy({
