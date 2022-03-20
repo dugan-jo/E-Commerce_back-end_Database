@@ -7,28 +7,28 @@ const Tag = require("./Tag");
 class ProductTag extends Model {}
 
 ProductTag.init(
-  {
+  { 
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
-    },
+      autoIncrement: true, 
+      allowNull: false
+  },
     product_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: Product,
-        key: "id",
-      },
+      model: Product,
+        key: 'id',
+      }
     },
-    tag_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Tag,
-        key: "id",
-      },
-    },
-  },
+  tag_id: {
+    type: DataTypes.INTEGER, 
+    references: {
+      model: Tag,
+      key: 'id',
+    }
+  }
+},
   {
     sequelize,
     timestamps: false,

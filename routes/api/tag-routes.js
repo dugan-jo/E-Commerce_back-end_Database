@@ -11,12 +11,20 @@ const { Tag, Product, ProductTag } = require('../../models');
 //    FIND ALL TAGS    //
 //                     //
 /////////////////////////
-// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
-router.get('/', (req, res) => {
-  Tag.findAll().then((tagData) => {
-    res.json(tagData);
-  })
+// GET -> -> -> http://localhost:3001/api/tags <- <- <- GET //
+router.get('/', async (req, res) => {
+  const getTags = await Tag.findAll({
+    attributes:['id'],
+    include: [{
+      model: Product,
+      through: ProductTag
+    }]
+  }) .then(getTags =>res.json(getTags))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
 });
+})
 // 
 // 
 // 
@@ -25,22 +33,20 @@ router.get('/', (req, res) => {
 //    FIND A SINGLE TAG BY ID    //
 //                               //
 ///////////////////////////////////
-// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
+// GET -> -> -> http://localhost:3001/api/tags/{ID} <- <- <- GET //
 router.get('/:id', async (req, res) => {
   try {
-    const tagData = await Product.findByPk(req.params.id, {
+    const tagData = await Tag.findByPk(req.params.id, {
       include: [{ model: Product }],
     })
-    if (!productData) {
+    if (!tagData) {
       res.status(404).json({ message: 'No Tag found with that id!' });
       return;
     } 
-    res.status(200).json(productData);
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
 });
 // 
 // 
@@ -50,11 +56,21 @@ router.get('/:id', async (req, res) => {
 //    CREATE A NEW TAG    //
 //                        //
 ////////////////////////////
-// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
-router.post('/', (req, res) => {
-  Tag.create({
-    tag_name: req.body.tag_name
-  })
+// POST -> -> -> http://localhost:3001/api/tags <- <- <- POST //
+// router.post('/', (req, res) => {
+//   Tag.create({
+//     tag_name: req.body.tag_name
+//   })
+// });
+router.post("/", async (req, res) => {
+  try {
+    const newTag = await Tag.create({
+      tag_name: req.body.tag_name,
+    });
+    res.status(200).json(newTag);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 // 
 // 
@@ -64,7 +80,7 @@ router.post('/', (req, res) => {
 //    UPDATE TAG's NAME BY ID    //
 //                               //
 ///////////////////////////////////
-// PUT -> -> -> http://localhost:3001/api/categories <- <- <- PUT //
+// PUT -> -> -> http://localhost:3001/api/tags/{ID} <- <- <- PUT //
 router.put("/:id", async (req, res) => {
   try {
     const updateTag = await Tag.update(req.body, {
@@ -89,9 +105,9 @@ router.put("/:id", async (req, res) => {
 //    DELETE TAG BY ID    //
 //                        //
 ////////////////////////////
-// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
+// POST -> -> -> http://localhost:3001/api/tags/{ID} <- <- <- POST //
 router.delete('/:id', (req, res) => {
-  Category.destroy({
+  Tag.destroy({
     where: {
       id: req.params.id
     }

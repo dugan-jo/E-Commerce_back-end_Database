@@ -8,6 +8,7 @@ const { Category, Product } = require("../../models");
 //    GET ALL CATEGORIES    //
 //                          //
 //////////////////////////////
+// GET -> -> -> http://localhost:3001/api/categories <- <- <- GET //
 router.get("/", async (req, res) => {
   // find all categories
   // be sure to include its associated Products
@@ -28,6 +29,7 @@ router.get("/", async (req, res) => {
 //    GET ONE CATEGORY    //
 //                        //
 ////////////////////////////
+// GET -> -> -> http://localhost:3001/api/categories/{ID} <- <- <- GET //
 router.get("/:id", async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
@@ -52,6 +54,7 @@ router.get("/:id", async (req, res) => {
 //    CREATE A NEW CATEGORY    //
 //                             //
 /////////////////////////////////
+// POST -> -> -> http://localhost:3001/api/categories <- <- <- POST //
 router.post("/", async (req, res) => {
   try {
     const newCategory = await Category.create({
@@ -70,7 +73,7 @@ router.post("/", async (req, res) => {
 //    UPDATE A CATEGORY BY ITS ID VALUE    //
 //                                         //
 /////////////////////////////////////////////
-// 
+// PUT -> -> -> http://localhost:3001/api/categories/{ID} <- <- <- PUT //
 router.put("/:id", async (req, res) => {
   try {
     const updateCategory = await Category.update(req.body, {
@@ -95,7 +98,7 @@ router.put("/:id", async (req, res) => {
 //    DELETE A CATEGORY BY ITS ID VALUE    //
 //                                         //
 /////////////////////////////////////////////
-// 
+// DELETE -> -> -> http://localhost:3001/api/categories <- <- <- DELETE //
 router.delete("/:id", async (req, res) => {
   try {
     const deleteCategory = await Category.destroy({
