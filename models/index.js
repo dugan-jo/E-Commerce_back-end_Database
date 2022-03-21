@@ -30,8 +30,8 @@ Product.belongsTo(Category, {
 //                                                       //
 ///////////////////////////////////////////////////////////
 Product.belongsToMany(Tag, {
-  through: "ProductTag",
-  foreignKey: "tag_id",
+  through: ProductTag,
+  foreignKey: "product_id",
 });
 
 ///////////////////////////////////////////////////////////
