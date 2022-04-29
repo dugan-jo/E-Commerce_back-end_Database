@@ -1,4 +1,4 @@
-# 13 Object-Relational Mapping (ORM): E-Commerce Back End
+# Object-Relational Mapping (ORM): E-Commerce Back End
 
 ## Google Drive Video
 https://drive.google.com/file/d/1L_nneG6_9gdllD9bv38S1y5dlFu8KJFU/view
